@@ -4,6 +4,8 @@ import TrendingPage from "./pages/trending";
 import SearchPage from "./pages/search";
 import RandomPage from "./pages/random";
 import Layout from "./pages/layout";
+import GifDetail from "./pages/gif-detail";
+import { getTrending, getSpecificGif } from "./api";
 import "./App.css";
 
 const router = createBrowserRouter([
@@ -12,19 +14,31 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/trending",
+        path: "trending",
         element: <TrendingPage />,
+        loader: () => {
+          return getTrending();
+        },
       },
       {
-        path: "/random",
+        path: "random",
         element: <RandomPage />,
       },
       {
-        path: "/search",
+        path: "search",
         element: <SearchPage />,
       },
     ],
   },
+  {
+    path: "/gif/:gifId",
+    element: <GifDetail />,
+    loader: ({ params }) => {
+      const gifId = params.gifId;
+
+      return getSpecificGif(gifId);
+    }
+  }
 ]);
 
 function App() {
